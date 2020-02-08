@@ -1,0 +1,21 @@
+{
+  "name": "daniloalvess/wp-active-campaign-lists",
+  "description": "Gerenciador de listas do Active Campaign",
+  "type": "wordpress-plugin",
+  "require": {
+    "htmlburger/carbon-fields": "^3.1",
+    "htmlburger/carbon-field-number": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ActiveCampaignLists\\": "src/"
+    }
+  },
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Danilo Alves",
+      "email": "daniloalves.ti@gmail.com"
+    }
+  ]
+}

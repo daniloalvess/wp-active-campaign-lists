@@ -1,0 +1,98 @@
+$primary: #3389d8;
+$primary-light: #5fa2ed;
+$gray: #9A9999;
+
+.wp-active-campaign-lists {
+  border: solid 1px #ccc;
+  margin: 20px 0;
+
+  header {
+    display: flex;
+    text-align: center;
+    background-color: #ccc;
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  .row {
+    display: flex;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+
+    .col {
+      padding: 10px;
+    }
+  }
+
+  .col {
+    flex: 1;
+  }
+
+  .toggle {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    display: block;
+    height: 20px;
+    left: calc(50% - 30px);
+    position: relative;
+    transform: translate3d(0,0,0);
+    width: 40px;
+
+    &:before {
+      content: "";
+      position: relative;
+      top: 3px;
+      left: 3px;
+      width: 34px;
+      height: 14px;
+      display: block;
+      background: $gray;
+      border-radius: 8px;
+      transition: background .2s ease;
+    }
+
+    span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      display: block;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba($gray,.5);
+      transition: all .2s ease;
+
+      &:before {
+        content: "";
+        position: absolute;
+        display: block;
+        margin: -18px;
+        width: 56px;
+        height: 56px;
+        background: rgba($primary,.5);
+        border-radius: 50%;
+        transform: scale(0);
+        opacity: 1;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .input:checked + .toggle:before {
+      background: $primary-light;
+  }
+
+  .input:checked + .toggle span {
+      background: $primary;
+      transform: translateX(20px);
+      transition: all 0.2s cubic-bezier(0.8, 0.4, 0.3, 1.25), background 0.15s ease;
+      box-shadow: 0 3px 8px rgba(79, 46, 220, 0.2);
+  }
+
+  .input:checked + .toggle span:before {
+      transform: scale(1);
+      opacity: 0;
+      transition: all .4s ease;
+  }
+}

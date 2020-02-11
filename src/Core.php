@@ -9,6 +9,7 @@ class Core  {
 	public function __construct() {
 		$this->load_controllers([
 			'Settings',
+			'Pages',
 		]);
 	}
 

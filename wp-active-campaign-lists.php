@@ -24,3 +24,5 @@ add_action( 'after_setup_theme', function() {
 } );
 
 $core = new ActiveCampaignLists\Core();
+
+register_activation_hook( __FILE__, 'flush_rewrite_rules' );

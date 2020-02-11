@@ -38,7 +38,7 @@ class Settings {
 						->add_fields([
 							Field::make( 'text', 'name', __( 'Nome', 'wp-active-campaign-lists' ) ),
 							Field::make( 'number', 'id', __( 'ID', 'wp-active-campaign-lists' ) )
-								->set_min( 0 )
+								->set_min(0)
 						]),
 				)
 			);

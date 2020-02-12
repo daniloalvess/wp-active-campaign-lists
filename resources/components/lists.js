@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 document.addEventListener("DOMContentLoaded", function() {
   const component = document.querySelector('[data-component=lists]');
@@ -20,13 +21,35 @@ document.addEventListener("DOMContentLoaded", function() {
     request(form, element);
   }
 
+  const handleMessage = (message, type = 'error') => {
+    if ( type === 'error' ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Ops...',
+        text: message
+      });
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: message,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+
+  }
+
   const request = (formData) => {
     axios.post( window.waclVars.ajaxUrl, formData).then((response) => {
       document.body.classList.remove('is-loading');
+      const { data } = response.data;
+
       if (!response.data.success) {
-        const { data } = response.data;
-        alert(data.message);
+        handleMessage(data.message);
+        return;
       }
+
+      handleMessage(data.message, 'success');
     });
   }
 

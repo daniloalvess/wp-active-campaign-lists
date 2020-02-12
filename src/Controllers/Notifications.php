@@ -60,8 +60,9 @@ class Notifications {
 			return View::render(
 				'notifications.main',
 				[
-					'lists'   => carbon_get_theme_option( 'wpacl_lists' ),
-					'contact' => $this->get_current_contact( $user )
+					'lists'               => carbon_get_theme_option( 'wpacl_lists' ),
+					'contact'             => $this->get_current_contact( $user ),
+					'missing_credentials' => $this->get_api()->check_credentials(),
 				]
 			);
 		}
@@ -102,7 +103,7 @@ class Notifications {
 			wp_send_json_error( [ 'message' => __( 'Não foi possível desativar as notificações.', 'wp-active-campaign-lists' ) ] );
 		}
 
-		wp_send_json_success( [ 'message' => __( 'Atualizado com sucesso.', 'wp-active-campaign-lists' ) ] );
+		wp_send_json_success( [ 'message' => __( 'Salvo com sucesso!', 'wp-active-campaign-lists' ) ] );
 	}
 
 	private function get_current_contact( $user ) {

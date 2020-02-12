@@ -18,9 +18,10 @@ body {
 
     .loader {
       display: block;
+      left: 50%;
       position: absolute;
       top: 50%;
-      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }
@@ -29,6 +30,7 @@ body {
   border: solid 1px $gray-light;
   border-bottom: none;
   margin: 20px 0;
+  background: #fff;
 
   .loader {
     display: none;

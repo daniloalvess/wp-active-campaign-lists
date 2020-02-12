@@ -11,6 +11,16 @@ class Core  {
 			'Settings',
 			'Notifications',
 		]);
+
+		add_filter( 'plugin_action_links_' . WACL_PLUGIN_BASENAME, array( $this, 'add_action_links' ) );
+	}
+
+	public function add_action_links( $links ) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=wpacl-settings' ) . '">Configurações</a>',
+		);
+
+		return array_merge( $action_links, $links );
 	}
 
 	public function load_controllers( $controllers ) {
@@ -40,6 +50,6 @@ class Core  {
 	public static function filemtime( $path ) {
 		$file = self::plugin_dir_path( $path );
 
-		return file_exists( $file ) ? filemtime( $file ) : '1.0.0';
+		return file_exists( $file ) ? filemtime( $file ) : WACL_PLUGIN_VERSION;
 	}
 }

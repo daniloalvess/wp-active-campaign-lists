@@ -23,6 +23,9 @@ add_action( 'after_setup_theme', function() {
 	}
 } );
 
+define( 'WACL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'WACL_PLUGIN_VERSION', '1.0.0' );
+
 $core = new ActiveCampaignLists\Core();
 
 register_activation_hook( __FILE__, 'flush_rewrite_rules' );

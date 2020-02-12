@@ -1,15 +1,17 @@
 $primary: #3389d8;
 $primary-light: #5fa2ed;
 $gray: #9A9999;
+$gray-light: #dadada;
 
 .wp-active-campaign-lists {
-  border: solid 1px #ccc;
+  border: solid 1px $gray-light;
+  border-bottom: none;
   margin: 20px 0;
 
   header {
     display: flex;
     text-align: center;
-    background-color: #ccc;
+    background-color: $gray-light;
     font-weight: bold;
     padding: 10px;
   }
@@ -17,7 +19,7 @@ $gray: #9A9999;
   .row {
     display: flex;
     text-align: center;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid $gray-light;
 
     .col {
       padding: 10px;

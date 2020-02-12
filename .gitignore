@@ -13,3 +13,5 @@ node_modules/
 ehthumbs.db
 Thumbs.db
 .idea
+yarn.lock
+package-lock.json

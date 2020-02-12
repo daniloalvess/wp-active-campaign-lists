@@ -104,6 +104,17 @@ class Api {
 		}
 	}
 
+	public function update_contact_list( $data ) {
+		try {
+			return $this->request(
+				$this->get_url( 'contactLists' ),
+				$data
+			);
+		} catch ( Exception $e ) {
+			return $e->getMessage();
+		}
+	}
+
 	/**
 	 * Get body and normalize the response type.
 	 *

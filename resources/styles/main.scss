@@ -3,10 +3,36 @@ $primary-light: #5fa2ed;
 $gray: #9A9999;
 $gray-light: #dadada;
 
+body {
+  &.is-loading {
+    opacity: .5;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
+
+    .loader {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+  }
+}
+
 .wp-active-campaign-lists {
   border: solid 1px $gray-light;
   border-bottom: none;
   margin: 20px 0;
+
+  .loader {
+    display: none;
+  }
 
   header {
     display: flex;

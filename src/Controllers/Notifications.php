@@ -2,7 +2,7 @@
 
 namespace ActiveCampaignLists\Controllers;
 
-use ActiveCampaignLists\Helpers\View;
+use ActiveCampaignLists\Helpers\{Utils, View};
 use ActiveCampaignLists\Core;
 use ActiveCampaignLists\Services\Api;
 
@@ -15,6 +15,7 @@ class Notifications {
 		add_filter( 'generate_rewrite_rules', array( $this, 'add_rewrite_rules' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
+		add_action( 'wp_ajax_e36f520fa', array( $this, 'handle_ajax_request' ) );
 	}
 
 	public function add_scripts() {
@@ -23,6 +24,14 @@ class Notifications {
 			Core::plugins_url( 'resources/dist/bundle.js' ),
 			array( 'jquery' ),
 			Core::filemtime( 'resources/dist/bundle.js' )
+		);
+
+		wp_localize_script(
+			'wp-active-campaign-lists-scripts',
+			'waclVars',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' )
+			)
 		);
 	}
 
@@ -60,6 +69,42 @@ class Notifications {
 		return $template;
 	}
 
+	public function handle_ajax_request() {
+		if ( ! wp_verify_nonce( Utils::post('nonce'), 'wacl_update_list' ) ) {
+			wp_send_json_error( [ 'message' => __( 'Requisição inválida.', 'wp-active-campaign-lists' ) ] );
+		}
+
+		$contact_id = Utils::post( 'contact_id', false, 'intval' );
+		$list_id    = Utils::post( 'list_id', false, 'intval' );
+		$status     = Utils::post( 'status', false, 'intval' );
+
+		if ( ! $contact_id ) {
+			wp_send_json_error( [ 'message' => __( 'Por favor, informe o ID do contato.', 'wp-active-campaign-lists' ) ] );
+		}
+
+		if ( ! $list_id ) {
+			wp_send_json_error( [ 'message' => __( 'Por favor, informe o ID da lista.', 'wp-active-campaign-lists' ) ] );
+		}
+
+		if ( ! $status ) {
+			wp_send_json_error( [ 'message' => __( 'Por favor, informe um status válido.', 'wp-active-campaign-lists' ) ] );
+		}
+
+		$response = $this->get_api()->update_contact_list([
+			'contactList' => array(
+				'list'    => $list_id,
+				'contact' => $contact_id,
+				'status'  => $status,
+			)
+		]);
+
+		if ( ! isset( $response->contactList ) || $response->contactList->status !== $status ) {
+			wp_send_json_error( [ 'message' => __( 'Não foi possível desativar as notificações.', 'wp-active-campaign-lists' ) ] );
+		}
+
+		wp_send_json_success( [ 'message' => __( 'Atualizado com sucesso.', 'wp-active-campaign-lists' ) ] );
+	}
+
 	private function get_current_contact( $user ) {
 		$contact_id = get_user_meta( $user->ID, 'wacl_contact_id', true );
 
@@ -73,7 +118,22 @@ class Notifications {
 			return false;
 		}
 
-		return $response->contact;
+		$contact = $response->contact;
+		$contact->contactLists = $this->prepare_contact_lists( $response->contactLists );
+
+		return $contact;
+	}
+
+	private function prepare_contact_lists( $contact_lists ) {
+		$data = [];
+
+		foreach ( $contact_lists as $item ) {
+			if ( intval( $item->status ) === 1 ) {
+				array_push( $data, intval( $item->list ) );
+			}
+		}
+
+		return $data;
 	}
 
 	private function handle_create_contact( $user ) {

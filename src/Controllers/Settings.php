@@ -21,8 +21,10 @@ class Settings {
 				__( 'Autenticação', 'wp-active-campaign-lists' ),
 				array(
 					Field::make( 'text', 'wpacl_api_url', __( 'API Url', 'wp-active-campaign-lists' ) )
+						->set_required()
 						->set_attribute( 'placeholder', 'Ex.: https://exemplodeusuario.api-us1.com' ),
 					Field::make( 'text', 'wpacl_api_key', __( 'API Key', 'wp-active-campaign-lists' ) )
+						->set_required()
 						->set_attribute( 'placeholder', 'Ex.: 89f573ee96ee1a464bdceb56d86dc32b6f80410d208a02ee424832b1c587b861eb921177' )
 				)
 			)

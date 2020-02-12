@@ -14,8 +14,7 @@ class Api {
 
 	private static $instance = null;
 
-	private function __construct()
-	{
+	private function __construct() {
 		$this->set_config();
 	}
 
@@ -24,6 +23,13 @@ class Api {
 		$this->token    = carbon_get_theme_option( 'wpacl_api_key' );
 	}
 
+	/**
+	 * Return the default headers used by all requests.
+	 *
+	 * @param boolean $token
+	 *
+	 * @return array
+	 */
 	protected function get_headers( $token = false ) {
 		if ( empty( $token ) ) {
 			$token = $this->token;
@@ -35,7 +41,17 @@ class Api {
 		];
 	}
 
-	protected function request( $url, $data = [], $headers = [], $method = 'POST' ) {
+	/**
+	 * Abstraction for all requests.
+	 *
+	 * @param string $url
+	 * @param array $data
+	 * @param array $headers
+	 * @param string $method
+	 *
+	 * @return stdClass
+	 */
+	protected function build_request( $url, $data = [], $headers = [], $method = 'POST' ) {
 		$params = [
 			'method'  => $method,
 			'timeout' => 60,
@@ -50,69 +66,113 @@ class Api {
 		return $this->get_body( wp_safe_remote_request( $url, $params ) );
 	}
 
+	/**
+	 * Handle all POST requests.
+	 *
+	 * @param string $url
+	 *
+	 * @return stdClass
+	 */
+	protected function post( $url, $data = [] ) {
+		try {
+			return $this->build_request( $url, $data );
+		} catch ( Exception $e ) {
+			return $e->getMessage();
+		}
+	}
+
+	/**
+	 * Handle all GET requests.
+	 *
+	 * @param string $url
+	 *
+	 * @return stdClass
+	 */
+	protected function get( $url ) {
+		try {
+			return $this->build_request(
+				$url,
+				array(),
+				array(),
+				'GET'
+			);
+		} catch ( Exception $e ) {
+			return $e->getMessage();
+		}
+	}
+
 	protected function get_url( $resource ) {
 		return rtrim( $this->base_url, '/' ) . "/{$this->version}/{$resource}";
 	}
 
+	/**
+	 * Create a contact
+	 *
+	 * Reference: https://developers.activecampaign.com/reference#create-contact
+	 *
+	 * @param array $data
+	 *
+	 * @return stdClass
+	 */
 	public function create_contact( $data ) {
-		try {
-			return $this->request(
-				$this->get_url( 'contacts' ),
-				$data
-			);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
-		}
+		return $this->post( $this->get_url( 'contacts' ), $data );
 	}
 
+	/**
+	 * Retrieve a contact by user email.
+	 *
+	 * @param string $email
+	 *
+	 * @return stdClass
+	 */
 	public function find_contact_by_email( $email ) {
-		try {
-			return $this->request(
-				$this->get_url( 'contacts/?email=' . sanitize_email( $email ) ),
-				array(),
-				array(),
-				'GET'
-			);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
-		}
+		return $this->get( $this->get_url( 'contacts/?email=' . sanitize_email( $email ) ) );
 	}
 
+	/**
+	 * Retrieve all lists.
+	 *
+	 * Reference: https://developers.activecampaign.com/reference#retrieve-all-lists
+	 *
+	 * @return stdClass
+	 */
 	public function find_all_lists() {
-		try {
-			return $this->request(
-				$this->get_url( 'lists' ),
-				array(),
-				array(),
-				'GET'
-			);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
-		}
+		return $this->get( $this->get_url( 'lists' ) );
 	}
 
+	/**
+	 * Retrieve a contact by ID.
+	 *
+	 * Reference: https://developers.activecampaign.com/reference#get-contact
+	 *
+	 * @param integer $contact_id
+	 *
+	 * @return stdClass
+	 */
 	public function find_contact_by_id( $contact_id ) {
-		try {
-			return $this->request(
-				$this->get_url( 'contacts/' . intval( $contact_id ) ),
-				array(),
-				array(),
-				'GET'
-			);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
-		}
+		return $this->get( $this->get_url( 'contacts/' . intval( $contact_id ) ) );
 	}
 
+	/**
+	 * Update the list status for a contact.
+	 *
+	 * Reference: https://developers.activecampaign.com/reference#update-list-status-for-contact
+	 *
+	 * @param array $data
+	 *
+	 * @return stdClass
+	 */
 	public function update_contact_list( $data ) {
-		try {
-			return $this->request(
-				$this->get_url( 'contactLists' ),
-				$data
-			);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
-		}
+		return $this->post( $this->get_url( 'contactLists' ), $data );
+	}
+
+	/**
+	 * Verify if the user filled API credentials.
+	 *
+	 * @return boolean
+	 */
+	public function check_credentials() {
+		return empty( $this->base_url ) || empty( $this->token );
 	}
 
 	/**
@@ -139,6 +199,11 @@ class Api {
 		return json_decode( $response['body'] );
 	}
 
+	/**
+	 * Return the instance of this class.
+	 *
+	 * @return ActiveCampaignLists\Services\Api;
+	 */
 	public static function get_instance()
 	{
 		if ( self::$instance === null ) {

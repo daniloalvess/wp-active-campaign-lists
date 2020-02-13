@@ -19,6 +19,10 @@ class Notifications {
 	}
 
 	public function add_scripts() {
+		if ( ! $this->is_notifications_page() ) {
+			return;
+		}
+
 		wp_enqueue_script(
 			'wp-active-campaign-lists-scripts',
 			Core::plugins_url( 'resources/dist/bundle.js' ),
@@ -51,23 +55,22 @@ class Notifications {
 	}
 
 	public function include_notifications_template( $template ) {
-		if ( intval( get_query_var( 'wacl_notifications' ) ) === 1 ) {
-
-			$user = wp_get_current_user();
-
-			$this->handle_create_contact( $user );
-
-			return View::render(
-				'notifications.main',
-				[
-					'lists'               => carbon_get_theme_option( 'wpacl_lists' ),
-					'contact'             => $this->get_current_contact( $user ),
-					'missing_credentials' => $this->get_api()->check_credentials(),
-				]
-			);
+		if ( ! $this->is_notifications_page() ) {
+			return $template;
 		}
 
-		return $template;
+		$user = wp_get_current_user();
+
+		$this->handle_create_contact( $user );
+
+		return View::render(
+			'notifications.main',
+			[
+				'lists'               => carbon_get_theme_option( 'wpacl_lists' ),
+				'contact'             => $this->get_current_contact( $user ),
+				'missing_credentials' => $this->get_api()->check_credentials(),
+			]
+		);
 	}
 
 	public function handle_ajax_request() {
@@ -163,6 +166,10 @@ class Notifications {
 		if ( isset( $response->contact ) ) {
 			update_user_meta( $user->ID, 'wacl_contact_id', intval( $response->contact->id ) );
 		}
+	}
+
+	private function is_notifications_page() {
+		return intval( get_query_var( 'wacl_notifications' ) ) === 1;
 	}
 
 	private function get_api() {

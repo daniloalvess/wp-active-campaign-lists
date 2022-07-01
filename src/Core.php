@@ -17,7 +17,7 @@ class Core  {
 
 	public function add_action_links( $links ) {
 		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'options-general.php?page=wpacl-settings' ) . '">Configurações</a>',
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=wpacl-settings' ) . '">Settings</a>',
 		);
 
 		return array_merge( $action_links, $links );

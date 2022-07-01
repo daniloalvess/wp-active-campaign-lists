@@ -7,23 +7,23 @@ use ActiveCampaignLists\Helpers\{ Utils, View };
 get_header();
 
 if ( ! is_user_logged_in() ) {
-	printf( '<h3>%s</h3>', __( 'É preciso estar logado para visualizar o conteúdo dessa página.', 'wp-active-campaign-lists' ) );
+	printf( '<h3>%s</h3>', __( 'You must be logged in to view the content of this page.', 'wpacl' ) );
 	get_footer();
 	return;
 }
 
 if ( $missing_credentials ) {
-	printf( '<h3>%s</h3>', __( 'Não foi possível conectar a API. Por favor, verifique as credenciais na administração.', 'wp-active-campaign-lists' ) );
+	printf( '<h3>%s</h3>', __( 'Could not connect API. Please try again later.', 'wpacl' ) );
 	get_footer();
 	return;
 }
 
 if ( empty( $lists ) ) {
-	printf( '<h3>%s</h3>', __( 'Nenhuma lista foi cadastrada.', 'wp-active-campaign-lists' ) );
+	printf( '<h3>%s</h3>', __( 'No list has been registered.', 'wpacl' ) );
 }
 
 if ( empty( $contact ) ) {
-	printf( '<h3>%s</h3>', __( 'Usuário não encontrado.', 'wp-active-campaign-lists' ) );
+	printf( '<h3>%s</h3>', __( 'User not found.', 'wpacl' ) );
 }
 
 if ( $lists && $contact ) :
@@ -34,8 +34,8 @@ if ( $lists && $contact ) :
 	<?php View::render( 'notifications.loader' ); ?>
 
 	<header>
-		<div class="col"><?php esc_html_e( 'Suas Assinaturas', 'wp-active-campaign-lists' ); ?></div>
-		<div class="col"><?php esc_html_e( 'Notificações', 'wp-active-campaign-lists' ); ?></div>
+		<div class="col"><?php esc_html_e( 'Your Subscriptions', 'wpacl' ); ?></div>
+		<div class="col"><?php esc_html_e( 'Notifications', 'wpacl' ); ?></div>
 	</header>
 
 	<?php foreach ( $lists as $list ) : ?>

@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: WP Active Campaign Lists
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Danilo Alves
  * Author URI: https://github.com/daniloalvess
- * Description: Gerencia listas do Active Campaign e usuários inscritos.
- * Text Domain: wp-active-campaign-lists
+ * Description: Manage Active Campaign list according to currently logged user.
+ * Text Domain: wpacl
  * Domain Path: /languages
  * Requires PHP: 7.0
 */
@@ -24,7 +24,7 @@ add_action( 'after_setup_theme', function() {
 } );
 
 define( 'WACL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-define( 'WACL_PLUGIN_VERSION', '1.0.0' );
+define( 'WACL_PLUGIN_VERSION', '1.0.1' );
 
 $core = new ActiveCampaignLists\Core();
 

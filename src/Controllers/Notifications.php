@@ -40,14 +40,14 @@ class Notifications {
 	}
 
 	public function add_query_vars( $query_vars ) {
-		$query_vars[] = 'wacl_notifications';
+		$query_vars[] = 'wpacl_notifications';
 
 		return $query_vars;
 	}
 
 	public function add_rewrite_rules( $wp_rewrite ) {
 		$wp_rewrite->rules = array_merge(
-			['notificacoes/?$' => 'index.php?wacl_notifications=1'],
+			['wpacl-notifications/?$' => 'index.php?wpacl_notifications=1'],
 			$wp_rewrite->rules
 		);
 
@@ -75,7 +75,7 @@ class Notifications {
 
 	public function handle_ajax_request() {
 		if ( ! wp_verify_nonce( Utils::post('nonce'), 'wacl_update_list' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Requisição inválida.', 'wp-active-campaign-lists' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid request.', 'wpacl' ) ] );
 		}
 
 		$contact_id = Utils::post( 'contact_id', false, 'intval' );
@@ -83,15 +83,15 @@ class Notifications {
 		$status     = Utils::post( 'status', false, 'intval' );
 
 		if ( ! $contact_id ) {
-			wp_send_json_error( [ 'message' => __( 'Por favor, informe o ID do contato.', 'wp-active-campaign-lists' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please, fill the contact ID.', 'wpacl' ) ] );
 		}
 
 		if ( ! $list_id ) {
-			wp_send_json_error( [ 'message' => __( 'Por favor, informe o ID da lista.', 'wp-active-campaign-lists' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please, fill the list ID.', 'wpacl' ) ] );
 		}
 
 		if ( ! $status ) {
-			wp_send_json_error( [ 'message' => __( 'Por favor, informe um status válido.', 'wp-active-campaign-lists' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please, inform a valid status.', 'wpacl' ) ] );
 		}
 
 		$response = $this->get_api()->update_contact_list([
@@ -103,10 +103,10 @@ class Notifications {
 		]);
 
 		if ( ! isset( $response->contactList ) || $response->contactList->status !== $status ) {
-			wp_send_json_error( [ 'message' => __( 'Não foi possível desativar as notificações.', 'wp-active-campaign-lists' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Unable to disable notifications.', 'wpacl' ) ] );
 		}
 
-		wp_send_json_success( [ 'message' => __( 'Salvo com sucesso!', 'wp-active-campaign-lists' ) ] );
+		wp_send_json_success( [ 'message' => __( 'Saved successfully!', 'wpacl' ) ] );
 	}
 
 	private function get_current_contact( $user ) {
@@ -169,7 +169,7 @@ class Notifications {
 	}
 
 	private function is_notifications_page() {
-		return intval( get_query_var( 'wacl_notifications' ) ) === 1;
+		return intval( get_query_var( 'wpacl_notifications' ) ) === 1;
 	}
 
 	private function get_api() {

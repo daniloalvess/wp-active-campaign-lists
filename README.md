@@ -1,19 +1,20 @@
-# Instruções
+# Overview
 
-1 - Faça o download do código aqui no Github e em seguida ative o plugin em sua instalação WordPress.
+This plugin provides a URL on the website that allows logged users to subscribe or unsubscribe to Active Campaign lists.
 
-2 - Vá até a seção de configurações:
-![listagem-de-plugins](https://user-images.githubusercontent.com/6590844/74387690-f90e6900-4dd7-11ea-92c8-beabd809a284.png)
+# Documentation
 
-3 - Preencha as suas credenciais do Active Campaign, que são obtidas na dashboard deles na aba "Developer":
+1. Download the code here on Github and then activate the plugin in your WordPress installation.
+
+2. Go to the settings:
+![image](https://user-images.githubusercontent.com/6590844/176965108-1d036da1-dfce-418b-8558-7729d00a52c8.png)
+
+3. Fill in your Active Campaign credentials, which you get from their dashboard in the "Developer" section:
 ![developer-settings](https://user-images.githubusercontent.com/6590844/74388107-43441a00-4dd9-11ea-8ebf-73bb7203bf9d.png)
-![configuracoes](https://user-images.githubusercontent.com/6590844/74387751-307d1580-4dd8-11ea-97b0-965545427a16.png)
+![image](https://user-images.githubusercontent.com/6590844/176965313-bf144b5d-9978-4e5e-93bf-e07838eb326b.png)
 
-4 - Em seguida cadastre as listas:
-![listas](https://user-images.githubusercontent.com/6590844/74387889-99fd2400-4dd8-11ea-92cd-cc054b0ade5a.png)
+4. Register one or more lists with any name you wish. The ID has to be the same in the Active Campaign platform:
+![image](https://user-images.githubusercontent.com/6590844/176965433-c484ba15-6856-4858-aff4-c097e28e2416.png)
 
-5 - Acesse a http://urldosite.com/notificacoes e você verá todas as listas cadastradas. A partir de agora, o usuário atual já foi cadastrado no Active Campaign.
-![notificacoes](https://user-images.githubusercontent.com/6590844/74387998-eba5ae80-4dd8-11ea-8e84-1549ce4deb22.png)
-
-6 - Agora basta ativar/desativar as notificações, ou seja, se inscrever ou não em uma das listas.
-![notificacoes-12-02-2020 20-52](https://user-images.githubusercontent.com/6590844/74388233-a930a180-4dd9-11ea-9cf1-9e7a8a77f959.gif)
+5. Go to https://yourwesbite.com/wpacl-notifications and you will see all registered lists. From now on, the current user has already been registered in Active Campaign and can decide whether or not to receive notifications.
+![image](https://user-images.githubusercontent.com/6590844/176966498-5170431b-d0e5-4c8a-af81-3303e9e40a7f.png)

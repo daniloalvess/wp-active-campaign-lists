@@ -22,7 +22,7 @@ class ApiClient {
 	 *
 	 * @return array
 	 */
-	protected function get_headers( $token = false ) {
+	public function get_headers( $token = false ) {
 		if ( empty( $token ) ) {
 			$token = $this->token;
 		}
@@ -93,7 +93,7 @@ class ApiClient {
 		}
 	}
 
-	protected function get_url( $resource ) {
+	public function get_url( $resource ) {
 		return rtrim( $this->base_url, '/' ) . "/{$this->version}/{$resource}";
 	}
 
@@ -163,7 +163,7 @@ class ApiClient {
 	 *
 	 * @return boolean
 	 */
-	public function check_credentials() {
+	public function is_invalid_credencials() {
 		return empty( $this->base_url ) || empty( $this->token );
 	}
 
@@ -174,7 +174,7 @@ class ApiClient {
 	 *
 	 * @return stdClass
 	 */
-	protected function get_body( $response ) {
+	public function get_body( $response ) {
 		$body          = new \stdClass();
 		$body->success = false;
 

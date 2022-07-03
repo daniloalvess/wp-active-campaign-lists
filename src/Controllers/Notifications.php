@@ -68,7 +68,7 @@ class Notifications {
 			[
 				'lists'               => carbon_get_theme_option( 'wpacl_lists' ),
 				'contact'             => $this->get_current_contact( $user ),
-				'missing_credentials' => $this->get_api()->check_credentials(),
+				'missing_credentials' => $this->get_api()->is_invalid_credencials(),
 			]
 		);
 	}

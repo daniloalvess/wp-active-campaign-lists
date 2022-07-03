@@ -4,18 +4,31 @@ namespace WpActiveCampaignLists\Controllers;
 
 use WpActiveCampaignLists\Helpers\{Utils, View};
 use WpActiveCampaignLists\Core;
-use WpActiveCampaignLists\Services\ApiClient;
+use WpActiveCampaignLists\Services\{ApiClient, Handler};
 
 defined( 'ABSPATH' ) || exit;
 
 class Notifications {
 
+	protected $handler;
+
 	public function __construct() {
+		$this->handler = $this->get_handler();
+
 		add_filter( 'template_include', array( $this, 'include_notifications_template' ) );
 		add_filter( 'generate_rewrite_rules', array( $this, 'add_rewrite_rules' ) );
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
 		add_action( 'wp_ajax_e36f520fa', array( $this, 'handle_ajax_request' ) );
+	}
+
+	public function get_handler() {
+		return new Handler(
+			new ApiClient(
+				get_option( '_wpacl_api_url' ),
+				get_option( '_wpacl_api_key' )
+			)
+		);
 	}
 
 	public function add_scripts() {
@@ -61,14 +74,14 @@ class Notifications {
 
 		$user = wp_get_current_user();
 
-		$this->handle_create_contact( $user );
+		$this->handler->save_contact( $user );
 
 		return View::render(
 			'notifications.main',
 			[
 				'lists'               => carbon_get_theme_option( 'wpacl_lists' ),
-				'contact'             => $this->get_current_contact( $user ),
-				'missing_credentials' => $this->get_api()->is_invalid_credencials(),
+				'contact'             => $this->handler->get_current_contact( $user ),
+				'missing_credentials' => $this->handler->api->is_invalid_credencials(),
 			]
 		);
 	}
@@ -94,7 +107,7 @@ class Notifications {
 			wp_send_json_error( [ 'message' => __( 'Please, inform a valid status.', 'wpacl' ) ] );
 		}
 
-		$response = $this->get_api()->update_contact_list([
+		$response = $this->handler->api->update_contact_list([
 			'contactList' => array(
 				'list'    => $list_id,
 				'contact' => $contact_id,
@@ -109,73 +122,7 @@ class Notifications {
 		wp_send_json_success( [ 'message' => __( 'Saved successfully!', 'wpacl' ) ] );
 	}
 
-	private function get_current_contact( $user ) {
-		$contact_id = get_user_meta( $user->ID, 'wacl_contact_id', true );
-
-		if ( empty( $contact_id ) ) {
-			return false;
-		}
-
-		$response = $this->get_api()->find_contact_by_id( $contact_id );
-
-		if ( ! isset( $response->contact ) ) {
-			return false;
-		}
-
-		$contact = $response->contact;
-		$contact->contactLists = $this->prepare_contact_lists( $response->contactLists );
-
-		return $contact;
-	}
-
-	private function prepare_contact_lists( $contact_lists ) {
-		$data = [];
-
-		foreach ( $contact_lists as $item ) {
-			if ( intval( $item->status ) === 1 ) {
-				array_push( $data, intval( $item->list ) );
-			}
-		}
-
-		return $data;
-	}
-
-	private function handle_create_contact( $user ) {
-		$is_created = get_user_meta( $user->ID, 'wacl_contact_id' );
-
-		if ( $is_created ) {
-			return;
-		}
-
-		$user_exists = $this->get_api()->find_contact_by_email( $user->user_email );
-
-		if ( isset( $user_exists->contacts ) && ! empty( $user_exists->contacts ) ) {
-			$contact = current( $user_exists->contacts );
-			update_user_meta( $user->ID, 'wacl_contact_id', intval( $contact->id ) );
-			return;
-		}
-
-		$response = $this->get_api()->create_contact([
-			'contact' => [
-				'email'     => $user->user_email,
-				'firstName' => $user->first_name,
-				'lastName'  => $user->last_name,
-			]
-		]);
-
-		if ( isset( $response->contact ) ) {
-			update_user_meta( $user->ID, 'wacl_contact_id', intval( $response->contact->id ) );
-		}
-	}
-
 	private function is_notifications_page() {
 		return intval( get_query_var( 'wpacl_notifications' ) ) === 1;
-	}
-
-	private function get_api() {
-		return new ApiClient(
-			carbon_get_theme_option( 'wpacl_api_url' ),
-			carbon_get_theme_option( 'wpacl_api_key' )
-		);
 	}
 }

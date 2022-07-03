@@ -3,9 +3,7 @@ namespace WpActiveCampaignLists\Tests\Services;
 
 use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
 use Brain\Monkey;
-
 use WpActiveCampaignLists\Services\ApiClient;
 
 class ApiClientTest extends TestCase {

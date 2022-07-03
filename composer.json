@@ -17,5 +17,8 @@
       "name": "Danilo Alves",
       "email": "daniloalves.ti@gmail.com"
     }
-  ]
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  }
 }

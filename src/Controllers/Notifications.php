@@ -4,7 +4,7 @@ namespace ActiveCampaignLists\Controllers;
 
 use ActiveCampaignLists\Helpers\{Utils, View};
 use ActiveCampaignLists\Core;
-use ActiveCampaignLists\Services\Api;
+use ActiveCampaignLists\Services\ApiClient;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -173,6 +173,9 @@ class Notifications {
 	}
 
 	private function get_api() {
-		return Api::get_instance();
+		return new ApiClient(
+			carbon_get_theme_option( 'wpacl_api_url' ),
+			carbon_get_theme_option( 'wpacl_api_key' )
+		);
 	}
 }

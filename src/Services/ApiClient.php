@@ -4,7 +4,7 @@ namespace ActiveCampaignLists\Services;
 
 defined( 'ABSPATH' ) || exit;
 
-class Api {
+class ApiClient {
 
 	protected $base_url;
 
@@ -12,15 +12,9 @@ class Api {
 
 	protected $version = 'api/3';
 
-	private static $instance = null;
-
-	private function __construct() {
-		$this->set_config();
-	}
-
-	protected function set_config() {
-		$this->base_url = carbon_get_theme_option( 'wpacl_api_url' );
-		$this->token    = carbon_get_theme_option( 'wpacl_api_key' );
+	public function __construct( $base_url, $token ) {
+		$this->base_url = $base_url;
+		$this->token    = $token;
 	}
 
 	/**
@@ -197,19 +191,5 @@ class Api {
 		}
 
 		return json_decode( $response['body'] );
-	}
-
-	/**
-	 * Return the instance of this class.
-	 *
-	 * @return ActiveCampaignLists\Services\Api;
-	 */
-	public static function get_instance()
-	{
-		if ( self::$instance === null ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 }

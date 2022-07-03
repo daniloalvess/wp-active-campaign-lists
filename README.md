@@ -2,9 +2,9 @@
 
 This plugin provides a URL on the website that allows logged users to subscribe or unsubscribe to Active Campaign lists.
 
-# Documentation
+# Configuration
 
-1. Download the code here on Github and then activate the plugin in your WordPress installation.
+1. Download the code here on Github, go to the plugin folder and run `composer install` then activate the plugin in your WordPress installation.
 
 2. Go to the settings:
 ![image](https://user-images.githubusercontent.com/6590844/176965108-1d036da1-dfce-418b-8558-7729d00a52c8.png)

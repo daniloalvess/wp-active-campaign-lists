@@ -1,8 +1,6 @@
 <?php
 
-namespace ActiveCampaignLists\Services;
-
-defined( 'ABSPATH' ) || exit;
+namespace WpActiveCampaignLists\Services;
 
 class ApiClient {
 

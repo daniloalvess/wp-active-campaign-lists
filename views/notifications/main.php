@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use ActiveCampaignLists\Helpers\{ Utils, View };
+use WpActiveCampaignLists\Helpers\{ Utils, View };
 
 get_header();
 

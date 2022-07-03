@@ -1,6 +1,6 @@
 <?php
 
-namespace ActiveCampaignLists;
+namespace WpActiveCampaignLists;
 
 defined( 'ABSPATH' ) || exit;
 

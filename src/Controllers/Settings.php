@@ -1,6 +1,6 @@
 <?php
 
-namespace ActiveCampaignLists\Controllers;
+namespace WpActiveCampaignLists\Controllers;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -39,8 +39,7 @@ class Settings {
 						])
 						->add_fields([
 							Field::make( 'text', 'name', __( 'Name', 'wpacl' ) ),
-							Field::make( 'number', 'id', __( 'ID (Active Campaign)', 'wpacl' ) )
-								->set_min(0)
+							Field::make( 'text', 'id', __( 'ID (Active Campaign)', 'wpacl' ) )
 						]),
 				)
 			);

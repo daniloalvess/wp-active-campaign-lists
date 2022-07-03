@@ -1,8 +1,8 @@
 <?php
 
-namespace ActiveCampaignLists\Helpers;
+namespace WpActiveCampaignLists\Helpers;
 
-use ActiveCampaignLists\Core;
+use WpActiveCampaignLists\Core;
 
 defined( 'ABSPATH' ) || exit;
 

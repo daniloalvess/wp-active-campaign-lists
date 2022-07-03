@@ -1,10 +1,10 @@
 <?php
 
-namespace ActiveCampaignLists\Controllers;
+namespace WpActiveCampaignLists\Controllers;
 
-use ActiveCampaignLists\Helpers\{Utils, View};
-use ActiveCampaignLists\Core;
-use ActiveCampaignLists\Services\ApiClient;
+use WpActiveCampaignLists\Helpers\{Utils, View};
+use WpActiveCampaignLists\Core;
+use WpActiveCampaignLists\Services\ApiClient;
 
 defined( 'ABSPATH' ) || exit;
 

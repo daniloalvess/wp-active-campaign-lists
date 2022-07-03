@@ -16,3 +16,4 @@ Thumbs.db
 .idea
 yarn.lock
 package-lock.json
+.phpunit.result.cache

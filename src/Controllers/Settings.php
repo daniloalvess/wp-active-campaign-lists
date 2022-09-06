@@ -38,7 +38,7 @@ class Settings {
 							'singular_name' => 'item',
 						])
 						->add_fields([
-						Field::make( 'text', 'name', __( 'Name', 'wpacl' ) ),
+							Field::make( 'text', 'name', __( 'Name', 'wpacl' ) ),
 							Field::make( 'text', 'id', __( 'ID (Active Campaign)', 'wpacl' ) )
 						]),
 				)
